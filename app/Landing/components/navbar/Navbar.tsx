@@ -21,7 +21,10 @@ const Navbar = () => {
             unoptimized
             width={32}
           />
-          <span className="font-bold text-xl">BotX</span>
+          <span className="font-bold text-xl">
+            <span className="text-foreground">Bot</span>
+            <span className="text-blue-600">X</span>
+          </span>
         </Link>
 
         {/* links */}

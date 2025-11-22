@@ -24,7 +24,7 @@ export default function RootLayout({
         {/* top gradient */}
         <div className="pointer-events-none absolute inset-0 top-[-400px] left-[40%] h-[280px] w-full overflow-hidden bg-[radial-gradient(ellipse_at_center,_#3b82f6_100%)] opacity-90 blur-[200px] lg:w-[800px]" />
         <Navbar />
-        <main className="mx-auto flex max-w-7xl flex-col px-4">{children}</main>
+        <main className="flex-1 px-6 md:px-8 lg:px-12">{children}</main>
         <Footer />
       </body>
     </html>

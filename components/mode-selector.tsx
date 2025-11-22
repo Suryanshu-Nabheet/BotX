@@ -35,20 +35,31 @@ export function ModeSelector({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button className="gap-2" size="sm" variant="outline">
-          <selected.icon className="h-4 w-4" />
-          <span className="hidden sm:inline">{selected.label}</span>
+        <Button
+          className="gap-2 border-primary/20 bg-background/50 transition-all hover:border-primary/40 hover:bg-accent"
+          size="sm"
+          variant="outline"
+        >
+          <selected.icon className="h-4 w-4 text-primary" />
+          <span className="hidden font-medium sm:inline">{selected.label}</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent align="end" className="w-48">
         {modes.map((mode) => (
           <DropdownMenuItem
-            className="gap-2"
+            className={cn(
+              "cursor-pointer gap-2 transition-colors",
+              mode.id === selectedMode &&
+                "bg-primary/10 font-medium text-primary"
+            )}
             key={mode.id}
             onClick={() => onModeChange(mode.id)}
           >
             <mode.icon className="h-4 w-4" />
             {mode.label}
+            {mode.id === selectedMode && (
+              <span className="ml-auto text-primary">✓</span>
+            )}
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>
