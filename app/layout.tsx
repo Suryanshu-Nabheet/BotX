@@ -4,12 +4,12 @@ import { Toaster } from "sonner";
 import { ThemeProvider } from "@/components/theme-provider";
 
 import "./globals.css";
-import { SessionProvider } from "next-auth/react";
+import { ClerkProvider } from "@clerk/nextjs";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://chat.vercel.ai"),
-  title: "Next.js Chatbot Template",
-  description: "Next.js chatbot template using the AI SDK.",
+  metadataBase: new URL("https://botx.ai"),
+  title: "BotX - Professional AI BotX",
+  description: "Advanced AI BotX with multi-model support.",
 };
 
 export const viewport = {
@@ -78,8 +78,10 @@ export default function RootLayout({
           disableTransitionOnChange
           enableSystem
         >
-          <Toaster position="top-center" />
-          <SessionProvider>{children}</SessionProvider>
+          <ClerkProvider>
+            <Toaster position="top-center" />
+            {children}
+          </ClerkProvider>
         </ThemeProvider>
       </body>
     </html>

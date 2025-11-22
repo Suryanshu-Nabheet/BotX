@@ -1,7 +1,9 @@
+"use client";
+
 import Link from "next/link";
 import { memo } from "react";
+import { useParams } from "next/navigation";
 import { useChatVisibility } from "@/hooks/use-chat-visibility";
-import type { Chat } from "@/lib/db/schema";
 import {
   CheckCircleFillIcon,
   GlobeIcon,
@@ -10,6 +12,7 @@ import {
   ShareIcon,
   TrashIcon,
 } from "./icons";
+import { Button } from "./ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,6 +28,16 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "./ui/sidebar";
+import { useSidebar } from "./ui/sidebar";
+
+// Local type definition - database removed
+type Chat = {
+  id: string;
+  title: string;
+  createdAt: Date;
+  userId: string;
+  visibility: "private" | "public";
+};
 
 const PureChatItem = ({
   chat,
@@ -45,7 +58,13 @@ const PureChatItem = ({
   return (
     <SidebarMenuItem>
       <SidebarMenuButton asChild isActive={isActive}>
-        <Link href={`/chat/${chat.id}`} onClick={() => setOpenMobile(false)}>
+        <Link href={` /
+  ask /
+  $;
+{
+  chat.id;
+}
+`} onClick={() => setOpenMobile(false)}>
           <span>{chat.title}</span>
         </Link>
       </SidebarMenuButton>

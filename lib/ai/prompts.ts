@@ -50,20 +50,52 @@ About the origin of user's request:
 - country: ${requestHints.country}
 `;
 
+export const codingPrompt = `
+You are an expert software engineer and coding assistant.
+- Write clean, efficient, and well-documented code.
+- Explain your logic clearly.
+- Use best practices and design patterns.
+- When writing code, always use artifacts.
+`;
+
+export const reasoningPrompt = `
+You are a logical reasoning assistant.
+- Break down complex problems into smaller steps.
+- Use chain-of-thought reasoning.
+- Be precise and analytical.
+`;
+
+export const visionPrompt = `
+You are a vision assistant.
+- Analyze images and visual content.
+- Provide detailed descriptions and insights.
+`;
+
 export const systemPrompt = ({
   selectedChatModel,
+  selectedMode = "general",
   requestHints,
 }: {
   selectedChatModel: string;
+  selectedMode?: "general" | "coding" | "reasoning" | "vision";
   requestHints: RequestHints;
 }) => {
   const requestPrompt = getRequestPromptFromHints(requestHints);
+  let modePrompt = regularPrompt;
 
-  if (selectedChatModel === "chat-model-reasoning") {
-    return `${regularPrompt}\n\n${requestPrompt}`;
+  if (selectedMode === "coding") {
+    modePrompt = codingPrompt;
+  } else if (selectedMode === "reasoning") {
+    modePrompt = reasoningPrompt;
+  } else if (selectedMode === "vision") {
+    modePrompt = visionPrompt;
   }
 
-  return `${regularPrompt}\n\n${requestPrompt}\n\n${artifactsPrompt}`;
+  if (selectedChatModel === "chat-model-reasoning") {
+    return `${modePrompt}\n\n${requestPrompt}`;
+  }
+
+  return `${modePrompt}\n\n${requestPrompt}\n\n${artifactsPrompt}`;
 };
 
 export const codePrompt = `
@@ -117,4 +149,4 @@ export const titlePrompt = `\n
     - you will generate a short title based on the first message a user begins a conversation with
     - ensure it is not more than 80 characters long
     - the title should be a summary of the user's message
-    - do not use quotes or colons`
+    - do not use quotes or colons`;

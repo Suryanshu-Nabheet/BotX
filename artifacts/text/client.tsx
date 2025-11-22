@@ -11,8 +11,19 @@ import {
   UndoIcon,
 } from "@/components/icons";
 import { Editor } from "@/components/text-editor";
-import type { Suggestion } from "@/lib/db/schema";
 import { getSuggestions } from "../actions";
+
+// Local type definition - database removed
+type Suggestion = {
+  id: string;
+  documentId: string;
+  originalText: string;
+  suggestedText: string;
+  description: string | null;
+  isResolved: boolean;
+  userId: string;
+  createdAt: Date;
+};
 
 type TextArtifactMetadata = {
   suggestions: Suggestion[];
