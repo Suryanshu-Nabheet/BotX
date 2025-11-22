@@ -63,15 +63,15 @@ export function AppSidebar() {
       <Sidebar className="group-data-[side=left]:border-r-0">
         <SidebarHeader>
           <SidebarMenu>
-            <div className="flex flex-row items-center justify-between">
+            <div className="flex flex-row items-center justify-between px-2 py-3">
               <Link
-                className="flex flex-row items-center gap-3"
+                className="group flex flex-row items-center gap-3"
                 href="/"
                 onClick={() => {
                   setOpenMobile(false);
                 }}
               >
-                <span className="cursor-pointer rounded-md px-2 font-semibold text-lg hover:bg-muted">
+                <span className="cursor-pointer rounded-md font-bold text-2xl transition-opacity hover:opacity-80">
                   <span className="text-foreground">Bot</span>
                   <span className="text-blue-600">X</span>
                 </span>
@@ -128,7 +128,11 @@ export function AppSidebar() {
         <SidebarContent>
           <SidebarHistory />
         </SidebarContent>
-        <SidebarFooter>{user && <SidebarUserNav />}</SidebarFooter>
+        <SidebarFooter className="border-t bg-sidebar/50 backdrop-blur-sm">
+          <div className="p-2">
+            <SidebarUserNav />
+          </div>
+        </SidebarFooter>
       </Sidebar>
 
       <AlertDialog

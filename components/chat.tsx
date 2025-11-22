@@ -171,7 +171,7 @@ export function Chat({
           isReadonly={isReadonly}
           onModeChange={setSelectedMode}
           selectedMode={selectedMode}
-          selectedVisibilityType={initialVisibilityType}
+          selectedVisibilityType={visibilityType}
         />
 
         <Messages
