@@ -20,7 +20,7 @@ export const myProvider = customProvider({
     "gemma-3-12b-free": openrouter("google/gemma-3-12b-it:free"),
     "gemma-3n-2b-free": openrouter("google/gemma-3n-2b-it:free"),
     "gemma-3n-4b-free": openrouter("google/gemma-3n-4b-it:free"),
-    "chat-model": openrouter("moonshotai/kimi-k2:free"),
+    "chat-model": openrouter("meta-llama/llama-3.2-3b-instruct:free"),
     "chat-model-reasoning": openrouter(
       "google/gemini-2.0-flash-thinking-exp:free"
     ),

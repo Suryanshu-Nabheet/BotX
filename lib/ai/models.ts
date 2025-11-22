@@ -1,4 +1,4 @@
-export const DEFAULT_CHAT_MODEL: string = "kimi-k2-free";
+export const DEFAULT_CHAT_MODEL: string = "llama-3.2-3b-free";
 
 export type ChatModel = {
   id: string;

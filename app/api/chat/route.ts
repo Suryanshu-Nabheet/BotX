@@ -98,16 +98,28 @@ export async function POST(request: Request) {
 
     let finalMergedUsage: AppUsage | undefined;
 
+    const sysPrompt = systemPrompt({
+      selectedChatModel,
+      selectedMode,
+      requestHints,
+    });
+
+    const isGemma = selectedChatModel.includes("gemma");
+    let modelMessages = convertToModelMessages(uiMessages);
+
+    if (isGemma) {
+      modelMessages = [
+        { role: "user", content: `System Instructions:\n${sysPrompt}` },
+        ...modelMessages,
+      ];
+    }
+
     const stream = createUIMessageStream({
       execute: ({ writer: dataStream }) => {
         const result = streamText({
           model: myProvider.languageModel(selectedChatModel),
-          system: systemPrompt({
-            selectedChatModel,
-            selectedMode,
-            requestHints,
-          }),
-          messages: convertToModelMessages(uiMessages),
+          system: isGemma ? undefined : sysPrompt,
+          messages: modelMessages,
           stopWhen: stepCountIs(5),
           // experimental_activeTools:
           //   selectedChatModel === "chat-model-reasoning"
