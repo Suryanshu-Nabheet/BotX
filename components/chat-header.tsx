@@ -1,13 +1,11 @@
 "use client";
 
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { memo } from "react";
 import { useWindowSize } from "usehooks-ts";
 import { SidebarToggle } from "@/components/sidebar-toggle";
 import { Button } from "@/components/ui/button";
-import { PlusIcon, VercelIcon } from "./icons";
-import { type ChatMode, ModeSelector } from "./mode-selector";
+import { PlusIcon } from "./icons";
 import { useSidebar } from "./ui/sidebar";
 import { VisibilitySelector, type VisibilityType } from "./visibility-selector";
 
@@ -15,14 +13,10 @@ function PureChatHeader({
   chatId,
   selectedVisibilityType,
   isReadonly,
-  selectedMode,
-  onModeChange,
 }: {
   chatId: string;
   selectedVisibilityType: VisibilityType;
   isReadonly: boolean;
-  selectedMode: ChatMode;
-  onModeChange: (mode: ChatMode) => void;
 }) {
   const router = useRouter();
   const { open } = useSidebar();
@@ -48,19 +42,11 @@ function PureChatHeader({
       )}
 
       {!isReadonly && (
-        <>
-          <VisibilitySelector
-            chatId={chatId}
-            className="order-1 md:order-2"
-            selectedVisibilityType={selectedVisibilityType}
-          />
-          <div className="order-3 md:ml-auto">
-            <ModeSelector
-              onModeChange={onModeChange}
-              selectedMode={selectedMode}
-            />
-          </div>
-        </>
+        <VisibilitySelector
+          chatId={chatId}
+          className="order-1 md:order-2 md:ml-auto"
+          selectedVisibilityType={selectedVisibilityType}
+        />
       )}
     </header>
   );

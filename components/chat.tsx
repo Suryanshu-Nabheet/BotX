@@ -16,7 +16,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { useArtifact, useArtifactSelector } from "@/hooks/use-artifact";
+import { useArtifactSelector } from "@/hooks/use-artifact";
 import { useAutoResume } from "@/hooks/use-auto-resume";
 import { useChatVisibility } from "@/hooks/use-chat-visibility";
 import { useScrollToBottom } from "@/hooks/use-scroll-to-bottom";
@@ -28,7 +28,6 @@ import { Artifact } from "./artifact";
 import { ChatHeader } from "./chat-header";
 import { useDataStream } from "./data-stream-provider";
 import { Messages } from "./messages";
-import type { ChatMode } from "./mode-selector";
 import { MultimodalInput } from "./multimodal-input";
 import { getChatHistoryPaginationKey } from "./sidebar-history";
 import { toast } from "./toast";
@@ -69,7 +68,6 @@ export function Chat({
   const [usage, setUsage] = useState<AppUsage | undefined>(initialLastContext);
   const [showCreditCardAlert, setShowCreditCardAlert] = useState(false);
   const [currentModelId, setCurrentModelId] = useState(initialChatModel);
-  const [selectedMode, setSelectedMode] = useState<ChatMode>("general");
   const currentModelIdRef = useRef(currentModelId);
 
   useEffect(() => {
@@ -99,7 +97,6 @@ export function Chat({
             message: request.messages.at(-1),
             selectedChatModel: currentModelIdRef.current,
             selectedVisibilityType: visibilityType,
-            selectedMode,
             ...request.body,
           },
         };
@@ -169,8 +166,6 @@ export function Chat({
         <ChatHeader
           chatId={id}
           isReadonly={isReadonly}
-          onModeChange={setSelectedMode}
-          selectedMode={selectedMode}
           selectedVisibilityType={visibilityType}
         />
 
@@ -202,7 +197,6 @@ export function Chat({
               setMessages={setMessages}
               status={status}
               stop={stop}
-              usage={usage}
             />
           )}
         </div>
