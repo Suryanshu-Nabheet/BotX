@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import useSWR, { useSWRConfig } from "swr";
 import { unstable_serialize } from "swr/infinite";
+import { useWindowSize } from "usehooks-ts";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -91,10 +92,34 @@ export function Chat({
       api: "/api/chat",
       fetch: fetchWithErrorHandlers,
       prepareSendMessagesRequest(request) {
+        const lastMessage = request.messages.at(-1);
+        const parts = [];
+
+        if ((lastMessage as any)?.content) {
+          parts.push({ type: "text", text: (lastMessage as any).content });
+        }
+
+        // Handle attachments if they exist in the message data or experimental_attachments
+        // Note: This depends on how useChat handles the data passed in sendMessage
+        if ((lastMessage as any)?.data?.attachments) {
+          const attachments = (lastMessage as any).data.attachments;
+          attachments.forEach((attachment: any) => {
+            parts.push({
+              type: "file",
+              mediaType: attachment.contentType,
+              name: attachment.name,
+              url: attachment.url,
+            });
+          });
+        }
+
         return {
           body: {
             id: request.id,
-            message: request.messages.at(-1),
+            message: {
+              ...lastMessage,
+              parts,
+            },
             selectedChatModel: currentModelIdRef.current,
             selectedVisibilityType: visibilityType,
             ...request.body,
@@ -141,7 +166,17 @@ export function Chat({
       });
 
       setHasAppendedQuery(true);
-      window.history.replaceState({}, "", `/ask/${id}`);
+      window.history.replaceState(
+        {},
+        "",
+        ` /
+  ask /
+  $;
+{
+  id;
+}
+`
+      );
     }
   }, [query, sendMessage, hasAppendedQuery, id]);
 
@@ -175,7 +210,7 @@ export function Chat({
           isReadonly={isReadonly}
           messages={messages}
           regenerate={regenerate}
-          selectedModelId={initialChatModel}
+          selectedModelId={currentModelId}
           setMessages={setMessages}
           status={status}
           votes={votes}
@@ -190,7 +225,6 @@ export function Chat({
               messages={messages}
               onModelChange={setCurrentModelId}
               selectedModelId={currentModelId}
-              selectedVisibilityType={visibilityType}
               sendMessage={sendMessage}
               setAttachments={setAttachments}
               setInput={setInput}

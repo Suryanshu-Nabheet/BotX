@@ -12,7 +12,15 @@ import {
   useState,
 } from "react";
 import { toast } from "sonner";
-import { useLocalStorage, useWindowSize } from "usehooks-ts";
+import { useWindowSize } from "usehooks-ts";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { chatModels } from "@/lib/ai/models";
 import type { Attachment, ChatMessage } from "@/lib/types";
 import { uploadFile } from "@/lib/upload";
 import { cn } from "@/lib/utils";
@@ -28,6 +36,7 @@ import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
 
 export function MultimodalInput({
+  chatId,
   input,
   setInput,
   status,
@@ -36,22 +45,26 @@ export function MultimodalInput({
   setAttachments,
   sendMessage,
   className,
+  selectedModelId,
+  onModelChange,
 }: {
   chatId: string;
   input: string;
-  setInput: Dispatch<SetStateAction<string>>;
-  status: UseChatHelpers<ChatMessage>["status"];
+  setInput: (value: string) => void;
+  status: string;
   stop: () => void;
-  attachments: Attachment[];
-  setAttachments: Dispatch<SetStateAction<Attachment[]>>;
-  messages: ChatMessage[];
+  attachments: Array<Attachment>;
+  setAttachments: Dispatch<SetStateAction<Array<Attachment>>>;
+  messages: Array<ChatMessage>;
   setMessages: UseChatHelpers<ChatMessage>["setMessages"];
-  sendMessage: UseChatHelpers<ChatMessage>["sendMessage"];
+  sendMessage: (message: ChatMessage, options?: any) => Promise<any>;
   className?: string;
+  selectedModelId?: string;
+  onModelChange?: (modelId: string) => void;
 }) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [uploadQueue, setUploadQueue] = useState<string[]>([]);
+  const [uploadQueue, setUploadQueue] = useState<Array<string>>([]);
   const [isEnhancing, setIsEnhancing] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const recognitionRef = useRef<any>(null);
@@ -62,7 +75,7 @@ export function MultimodalInput({
     if (textareaRef.current) {
       adjustHeight();
     }
-  }, [input]);
+  }, []);
 
   const adjustHeight = () => {
     if (textareaRef.current) {
@@ -71,19 +84,15 @@ export function MultimodalInput({
     }
   };
 
-  const handleInput = (event: ChangeEvent<HTMLTextAreaElement>) => {
+  const handleInput = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInput(event.target.value);
     adjustHeight();
   };
 
-  const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key === "Enter" && !event.shiftKey) {
       event.preventDefault();
-      if (status === "streaming") {
-        toast.error("Please wait for the model to finish its response!");
-      } else if (input.trim() || attachments.length > 0) {
-        submitForm();
-      }
+      submitForm();
     }
   };
 
@@ -99,7 +108,7 @@ export function MultimodalInput({
         data: {
           attachments: attachments as any,
         },
-      }
+      } as any
     );
 
     setAttachments([]);
@@ -123,7 +132,7 @@ export function MultimodalInput({
 
         setAttachments((currentAttachments) => [
           ...currentAttachments,
-          ...successfullyUploadedAttachments,
+          ...(successfullyUploadedAttachments as Array<Attachment>),
         ]);
       } catch (error) {
         console.error("Error uploading files!", error);
@@ -222,38 +231,39 @@ export function MultimodalInput({
 
   return (
     <div className="relative flex w-full flex-col gap-2">
-      {attachments.length > 0 && (
-        <div className="flex flex-row gap-2 overflow-x-auto p-2">
-          {attachments.map((attachment) => (
-            <PreviewAttachment
-              attachment={attachment}
-              key={attachment.url}
-              onRemove={() =>
-                setAttachments((prev) =>
-                  prev.filter((a) => a.url !== attachment.url)
-                )
-              }
-            />
-          ))}
-        </div>
-      )}
-
       <div
         className={cn(
-          "relative flex w-full flex-col rounded-xl border bg-background p-3 shadow-sm transition-all duration-200",
-          "focus-within:border-ring focus-within:ring-1 focus-within:ring-ring",
+          "relative flex w-full flex-col rounded-xl border border-input bg-background p-2 shadow-sm transition-colors focus-within:ring-1 focus-within:ring-ring",
           className
         )}
       >
-        <Textarea
-          className="min-h-[60px] w-full resize-none border-0 bg-transparent p-0 placeholder:text-muted-foreground focus-visible:ring-0 focus-visible:ring-offset-0"
-          onChange={handleInput}
-          onKeyDown={handleKeyDown}
-          placeholder="Send a message..."
-          ref={textareaRef}
-          rows={1}
-          value={input}
-        />
+        <form
+          className="w-full"
+          onSubmit={(e) => {
+            e.preventDefault();
+            submitForm();
+          }}
+          role="presentation"
+        >
+          <Textarea
+            autoComplete="off"
+            autoCorrect="off"
+            className="min-h-[60px] w-full resize-none border-0 bg-transparent p-0 placeholder:text-muted-foreground focus-visible:ring-0 focus-visible:ring-offset-0"
+            data-1p-ignore="true"
+            data-bw-ignore="true"
+            data-form-type="other"
+            data-lpignore="true"
+            id="chat-input-field"
+            name="chat-input-field"
+            onChange={handleInput}
+            onKeyDown={handleKeyDown}
+            placeholder="Send a message..."
+            ref={textareaRef}
+            rows={1}
+            spellCheck={false}
+            value={input}
+          />
+        </form>
 
         <div className="mt-2 flex flex-row items-center justify-between">
           <div className="flex flex-row items-center gap-2">
@@ -298,6 +308,28 @@ export function MultimodalInput({
             >
               <SparklesIcon size={18} />
             </Button>
+
+            {selectedModelId && onModelChange && (
+              <Select onValueChange={onModelChange} value={selectedModelId}>
+                <SelectTrigger className="h-8 w-fit gap-2 border-none bg-muted/50 px-2 font-medium text-muted-foreground text-xs hover:bg-muted hover:text-foreground focus:ring-0">
+                  <div className="flex items-center gap-1">
+                    <span className="size-2 rounded-full bg-green-500/50" />
+                    <SelectValue placeholder="Select model" />
+                  </div>
+                </SelectTrigger>
+                <SelectContent align="start" className="w-[200px]">
+                  {chatModels.map((model) => (
+                    <SelectItem
+                      className="text-xs"
+                      key={model.id}
+                      value={model.id}
+                    >
+                      {model.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
           </div>
 
           <div className="flex flex-row items-center gap-2">

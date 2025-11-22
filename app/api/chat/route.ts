@@ -109,22 +109,22 @@ export async function POST(request: Request) {
           }),
           messages: convertToModelMessages(uiMessages),
           stopWhen: stepCountIs(5),
-          experimental_activeTools:
-            selectedChatModel === "chat-model-reasoning"
-              ? []
-              : [
-                  "getWeather",
-                  "createDocument",
-                  "updateDocument",
-                  "requestSuggestions",
-                ],
+          // experimental_activeTools:
+          //   selectedChatModel === "chat-model-reasoning"
+          //     ? []
+          //     : [
+          //         "getWeather",
+          //         "createDocument",
+          //         "updateDocument",
+          //         "requestSuggestions",
+          //       ],
           experimental_transform: smoothStream({ chunking: "word" }),
-          tools: {
-            getWeather,
-            createDocument,
-            updateDocument,
-            requestSuggestions,
-          },
+          // tools: {
+          //   getWeather,
+          //   createDocument,
+          //   updateDocument,
+          //   requestSuggestions,
+          // },
           experimental_telemetry: {
             isEnabled: isProductionEnvironment,
             functionId: "stream-text",

@@ -46,9 +46,9 @@ const PurePreviewMessage = ({
 }) => {
   const [mode, setMode] = useState<"view" | "edit">("view");
 
-  const attachmentsFromMessage = message.parts.filter(
-    (part) => part.type === "file"
-  );
+  const attachmentsFromMessage = message.parts
+    ? message.parts.filter((part) => part.type === "file")
+    : [];
 
   useDataStream();
 
@@ -250,7 +250,7 @@ const PurePreviewMessage = ({
                           ) : (
                             <DocumentToolResult
                               isReadonly={isReadonly}
-                              result={part.output}
+                              result={part.output as any}
                               type="request-suggestions"
                             />
                           )
