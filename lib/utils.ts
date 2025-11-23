@@ -93,7 +93,8 @@ export function getTrailingMessageId({
   return trailingMessage.id;
 }
 
-export function sanitizeText(text: string) {
+export function sanitizeText(text: string | undefined | null) {
+  if (!text) return "";
   return text.replace('<has_function_call>', '');
 }
 
@@ -109,6 +110,9 @@ export function convertToUIMessages(messages: DBMessage[]): ChatMessage[] {
 }
 
 export function getTextFromMessage(message: ChatMessage | UIMessage): string {
+  if (!message.parts) {
+    return (message as any).content || "";
+  }
   return message.parts
     .filter((part) => part.type === 'text')
     .map((part) => (part as { type: 'text'; text: string}).text)

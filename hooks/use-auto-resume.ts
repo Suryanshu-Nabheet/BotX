@@ -1,7 +1,7 @@
 "use client";
 
 import type { UseChatHelpers } from "@ai-sdk/react";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useDataStream } from "@/components/data-stream-provider";
 import type { ChatMessage } from "@/lib/types";
 
@@ -35,19 +35,29 @@ export function useAutoResume({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [autoResume, initialMessages.at, resumeStream]);
 
+  const processedIndicesRef = useRef<Set<number>>(new Set());
+
   useEffect(() => {
     if (!dataStream) {
       return;
     }
-    if (dataStream.length === 0) {
-      return;
-    }
 
-    const dataPart = dataStream[0];
+    dataStream.forEach((dataPart, index) => {
+      if (processedIndicesRef.current.has(index)) {
+        return;
+      }
 
-    if (dataPart.type === "data-appendMessage") {
-      const message = JSON.parse(dataPart.data);
-      setMessages([...initialMessages, message]);
-    }
-  }, [dataStream, initialMessages, setMessages]);
+      if (dataPart.type === "data-appendMessage") {
+        const message = JSON.parse(dataPart.data);
+        setMessages((currentMessages) => {
+          if (currentMessages.some((m) => m.id === message.id)) {
+            return currentMessages;
+          }
+          return [...currentMessages, message];
+        });
+      }
+
+      processedIndicesRef.current.add(index);
+    });
+  }, [dataStream, setMessages]);
 }

@@ -1,31 +1,21 @@
 import { currentUser } from "@clerk/nextjs/server";
 import { geolocation } from "@vercel/functions";
+
 import {
   convertToModelMessages,
   createUIMessageStream,
   JsonToSseTransformStream,
-  smoothStream,
   stepCountIs,
   streamText,
 } from "ai";
+
 import { unstable_cache as cache } from "next/cache";
-import { after } from "next/server";
-import {
-  createResumableStreamContext,
-  type ResumableStreamContext,
-} from "resumable-stream";
 import type { ModelCatalog } from "tokenlens/core";
 import { fetchModels } from "tokenlens/fetch";
 import { getUsage } from "tokenlens/helpers";
-import { generateTitleFromUserMessage } from "@/app/ask/actions";
-import { entitlementsByUserType } from "@/lib/ai/entitlements";
 import type { ChatModel } from "@/lib/ai/models";
 import { type RequestHints, systemPrompt } from "@/lib/ai/prompts";
 import { myProvider } from "@/lib/ai/providers";
-import { createDocument } from "@/lib/ai/tools/create-document";
-import { getWeather } from "@/lib/ai/tools/get-weather";
-import { requestSuggestions } from "@/lib/ai/tools/request-suggestions";
-import { updateDocument } from "@/lib/ai/tools/update-document";
 import { isProductionEnvironment } from "@/lib/constants";
 import { ChatSDKError } from "@/lib/errors";
 import type { ChatMessage } from "@/lib/types";
@@ -34,8 +24,6 @@ import { generateUUID } from "@/lib/utils";
 import { type PostRequestBody, postRequestBodySchema } from "./schema";
 
 export const maxDuration = 60;
-
-const globalStreamContext: ResumableStreamContext | null = null;
 
 const getTokenlensCatalog = cache(
   async (): Promise<ModelCatalog | undefined> => {
@@ -65,7 +53,6 @@ export async function POST(request: Request) {
 
   try {
     const {
-      id,
       message,
       selectedChatModel,
       selectedMode,
@@ -93,8 +80,6 @@ export async function POST(request: Request) {
       city,
       country,
     };
-
-    const streamId = generateUUID();
 
     let finalMergedUsage: AppUsage | undefined;
 
@@ -130,17 +115,10 @@ export async function POST(request: Request) {
           //         "updateDocument",
           //         "requestSuggestions",
           //       ],
-          experimental_transform: smoothStream({ chunking: "word" }),
-          // tools: {
-          //   getWeather,
-          //   createDocument,
-          //   updateDocument,
-          //   requestSuggestions,
+          // experimental_telemetry: {
+          //   isEnabled: isProductionEnvironment,
+          //   functionId: "stream-text",
           // },
-          experimental_telemetry: {
-            isEnabled: isProductionEnvironment,
-            functionId: "stream-text",
-          },
           onFinish: async ({ usage }) => {
             try {
               const providers = await getTokenlensCatalog();
@@ -198,6 +176,24 @@ export async function POST(request: Request) {
 
     if (error instanceof ChatSDKError) {
       return error.toResponse();
+    }
+
+    // Handle OpenRouter specific errors regarding data policy
+    if (
+      error instanceof Error &&
+      (error.message.includes("No endpoints found matching your data policy") ||
+        JSON.stringify(error).includes(
+          "No endpoints found matching your data policy"
+        ))
+    ) {
+      console.warn("OpenRouter data policy error:", error);
+      return Response.json(
+        {
+          message:
+            "To use free models, you must enable data logging in OpenRouter settings. Go to https://openrouter.ai/settings/privacy and enable 'Allow inputs and outputs to be stored'.",
+        },
+        { status: 403 }
+      );
     }
 
     console.error("Unhandled error in chat API:", error, { vercelId });

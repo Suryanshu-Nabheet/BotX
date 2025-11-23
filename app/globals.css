@@ -4,7 +4,7 @@
 @source '../node_modules/streamdown/dist/index.js';
 
 /* Add KaTeX CSS for math rendering */
-@import 'katex/dist/katex.min.css';
+@import "katex/dist/katex.min.css";
 
 /* custom variant for setting dark mode programmatically */
 @custom-variant dark (&:is(.dark, .dark *));
@@ -21,8 +21,8 @@
   --card-foreground: hsl(240 10% 3.9%);
   --popover: hsl(0 0% 100%);
   --popover-foreground: hsl(240 10% 3.9%);
-  --primary: hsl(240 5.9% 10%);
-  --primary-foreground: hsl(0 0% 98%);
+  --primary: hsl(217 91% 60%);
+  --primary-foreground: hsl(0 0% 100%);
   --secondary: hsl(240 4.8% 95.9%);
   --secondary-foreground: hsl(240 5.9% 10%);
   --muted: hsl(240 4.8% 95.9%);
@@ -60,8 +60,8 @@
   --card-foreground: hsl(0 0% 98%);
   --popover: hsl(240 10% 3.9%);
   --popover-foreground: hsl(0 0% 98%);
-  --primary: hsl(0 0% 98%);
-  --primary-foreground: hsl(240 5.9% 10%);
+  --primary: hsl(217 91% 50%);
+  --primary-foreground: hsl(0 0% 100%);
   --secondary: hsl(240 3.7% 15.9%);
   --secondary-foreground: hsl(0 0% 98%);
   --muted: hsl(240 3.7% 15.9%);
@@ -342,7 +342,7 @@
   .animate-accordion-down {
     animation: accordion-down 0.3s ease-out;
   }
-  
+
   .animate-accordion-up {
     animation: accordion-up 0.3s ease-out;
   }

@@ -10,7 +10,7 @@ const geist = Geist({
 
 export const metadata: Metadata = {
   title: "BotX",
-  description: "The Fastest AI BotX.",
+  description: "The Fastest AI Bot.",
 };
 
 export default function RootLayout({

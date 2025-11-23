@@ -24,7 +24,7 @@ export default function Footer() {
               <span className="ml-1.5 font-bold text-xl">BotX</span>
             </Link>
             <p className="mt-2 text-muted-foreground text-sm">
-              The fastest AI BotX for all your needs.
+              The fastest AI Bot for all your needs.
             </p>
           </div>
 

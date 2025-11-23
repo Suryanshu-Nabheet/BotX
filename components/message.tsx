@@ -52,6 +52,11 @@ const PurePreviewMessage = ({
 
   useDataStream();
 
+  const parts =
+    message.parts && message.parts.length > 0
+      ? message.parts
+      : [{ type: "text", text: (message as any).content || "" }];
+
   return (
     <motion.div
       animate={{ opacity: 1 }}
@@ -74,15 +79,13 @@ const PurePreviewMessage = ({
 
         <div
           className={cn("flex flex-col", {
-            "gap-2 md:gap-4": message.parts?.some(
-              (p) => p.type === "text" && p.text?.trim()
+            "gap-2 md:gap-4": parts.some(
+              (p: any) => p.type === "text" && p.text?.trim()
             ),
             "min-h-96": message.role === "assistant" && requiresScrollPadding,
             "w-full":
               (message.role === "assistant" &&
-                message.parts?.some(
-                  (p) => p.type === "text" && p.text?.trim()
-                )) ||
+                parts.some((p: any) => p.type === "text" && p.text?.trim())) ||
               mode === "edit",
             "max-w-[calc(100%-2.5rem)] sm:max-w-[min(fit-content,80%)]":
               message.role === "user" && mode !== "edit",
@@ -106,16 +109,16 @@ const PurePreviewMessage = ({
             </div>
           )}
 
-          {message.parts?.map((part, index) => {
+          {parts.map((part, index) => {
             const { type } = part;
             const key = `message-${message.id}-part-${index}`;
 
-            if (type === "reasoning" && part.text?.trim().length > 0) {
+            if (type === "reasoning" && (part as any).text?.trim().length > 0) {
               return (
                 <MessageReasoning
                   isLoading={isLoading}
                   key={key}
-                  reasoning={part.text}
+                  reasoning={(part as any).text}
                 />
               );
             }
@@ -133,7 +136,7 @@ const PurePreviewMessage = ({
                       })}
                       data-testid="message-content"
                     >
-                      <Response>{sanitizeText(part.text)}</Response>
+                      <Response>{sanitizeText((part as any).text)}</Response>
                     </MessageContent>
                   </div>
                 );
@@ -161,19 +164,21 @@ const PurePreviewMessage = ({
             }
 
             if (type === "tool-getWeather") {
-              const { toolCallId, state } = part;
+              const { toolCallId, state } = part as any;
 
               return (
                 <Tool defaultOpen={true} key={toolCallId}>
                   <ToolHeader state={state} type="tool-getWeather" />
                   <ToolContent>
                     {state === "input-available" && (
-                      <ToolInput input={part.input} />
+                      <ToolInput input={(part as any).input} />
                     )}
                     {state === "output-available" && (
                       <ToolOutput
                         errorText={undefined}
-                        output={<Weather weatherAtLocation={part.output} />}
+                        output={
+                          <Weather weatherAtLocation={(part as any).output} />
+                        }
                       />
                     )}
                   </ToolContent>
@@ -182,15 +187,16 @@ const PurePreviewMessage = ({
             }
 
             if (type === "tool-createDocument") {
-              const { toolCallId } = part;
+              const { toolCallId } = part as any;
 
-              if (part.output && "error" in part.output) {
+              if ((part as any).output && "error" in (part as any).output) {
                 return (
                   <div
                     className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-500 dark:bg-red-950/50"
                     key={toolCallId}
                   >
-                    Error creating document: {String(part.output.error)}
+                    Error creating document:{" "}
+                    {String((part as any).output.error)}
                   </div>
                 );
               }
@@ -199,21 +205,22 @@ const PurePreviewMessage = ({
                 <DocumentPreview
                   isReadonly={isReadonly}
                   key={toolCallId}
-                  result={part.output}
+                  result={(part as any).output}
                 />
               );
             }
 
             if (type === "tool-updateDocument") {
-              const { toolCallId } = part;
+              const { toolCallId } = part as any;
 
-              if (part.output && "error" in part.output) {
+              if ((part as any).output && "error" in (part as any).output) {
                 return (
                   <div
                     className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-500 dark:bg-red-950/50"
                     key={toolCallId}
                   >
-                    Error updating document: {String(part.output.error)}
+                    Error updating document:{" "}
+                    {String((part as any).output.error)}
                   </div>
                 );
               }
@@ -221,36 +228,36 @@ const PurePreviewMessage = ({
               return (
                 <div className="relative" key={toolCallId}>
                   <DocumentPreview
-                    args={{ ...part.output, isUpdate: true }}
+                    args={{ ...(part as any).output, isUpdate: true }}
                     isReadonly={isReadonly}
-                    result={part.output}
+                    result={(part as any).output}
                   />
                 </div>
               );
             }
 
             if (type === "tool-requestSuggestions") {
-              const { toolCallId, state } = part;
+              const { toolCallId, state } = part as any;
 
               return (
                 <Tool defaultOpen={true} key={toolCallId}>
                   <ToolHeader state={state} type="tool-requestSuggestions" />
                   <ToolContent>
                     {state === "input-available" && (
-                      <ToolInput input={part.input} />
+                      <ToolInput input={(part as any).input} />
                     )}
                     {state === "output-available" && (
                       <ToolOutput
                         errorText={undefined}
                         output={
-                          "error" in part.output ? (
+                          "error" in (part as any).output ? (
                             <div className="rounded border p-2 text-red-500">
-                              Error: {String(part.output.error)}
+                              Error: {String((part as any).output.error)}
                             </div>
                           ) : (
                             <DocumentToolResult
                               isReadonly={isReadonly}
-                              result={part.output as any}
+                              result={(part as any).output as any}
                               type="request-suggestions"
                             />
                           )

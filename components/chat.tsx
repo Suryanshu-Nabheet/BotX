@@ -73,6 +73,7 @@ export function Chat({
 
   useEffect(() => {
     currentModelIdRef.current = currentModelId;
+    document.cookie = `chat-model=${currentModelId}; path=/; max-age=31536000`; // 1 year
   }, [currentModelId]);
 
   const {

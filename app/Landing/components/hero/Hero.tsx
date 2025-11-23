@@ -47,7 +47,7 @@ const Hero = () => {
           className="font-semibold text-4xl md:text-6xl"
           variants={itemVariants}
         >
-          The Fastest AI BotX
+          The Fastest AI Bot
         </motion.h1>
         <motion.p
           className="mx-auto max-w-md text-base text-muted-foreground max-md:max-w-xs md:text-lg"
