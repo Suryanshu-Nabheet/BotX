@@ -8,8 +8,8 @@ import { ClerkProvider } from "@clerk/nextjs";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://botx.ai"),
-  title: "BotX - Professional AI BotX",
-  description: "Advanced AI BotX with multi-model support.",
+  title: "BotX - Professional Ai Bot",
+  description: "Advanced Ai Bot with multi-model support.",
 };
 
 export const viewport = {

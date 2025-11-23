@@ -5,8 +5,3 @@ export const isTestEnvironment = Boolean(
     process.env.PLAYWRIGHT ||
     process.env.CI_PLAYWRIGHT
 );
-
-export const guestRegex = /^guest-\d+$/;
-
-// No database - no dummy password needed
-export const DUMMY_PASSWORD = "";

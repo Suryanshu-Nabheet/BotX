@@ -154,7 +154,7 @@ export const faqs = [
   {
     question: "What is BotX?",
     answer:
-      "BotX is a fast, multi-model AI BotX designed to provide instant and intelligent responses across a wide range of tasks.",
+      "BotX is a fast, multi-model Ai Bot designed to provide instant and intelligent responses across a wide range of tasks.",
   },
   {
     question: "Is BotX free to use?",

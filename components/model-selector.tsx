@@ -24,7 +24,8 @@ export function ModelSelector({
   const [optimisticModelId, setOptimisticModelId] =
     useOptimistic(selectedModelId);
 
-  const userType = "regular"; // TODO: Get from Clerk metadata or DB
+  // All authenticated users have the same entitlements (regular)
+  const userType = "regular";
   const { availableChatModelIds } = entitlementsByUserType[userType];
 
   const availableChatModels = chatModels.filter((chatModel) =>

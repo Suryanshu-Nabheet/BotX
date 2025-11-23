@@ -1,5 +1,5 @@
 <a href="https://chat.vercel.ai/">
-  <img alt="Next.js 14 and App Router-ready AI BotX." src="app/(chat)/opengraph-image.png">
+  <img alt="Next.js 14 and App Router-ready Ai Bot." src="app/(chat)/opengraph-image.png">
   <h1 align="center">Chat SDK</h1>
 </a>
 
@@ -48,13 +48,13 @@ With the [AI SDK](https://ai-sdk.dev/docs/introduction), you can also switch to 
 
 ## Deploy Your Own
 
-You can deploy your own version of the Next.js AI BotX to Vercel with one click:
+You can deploy your own version of the Next.js Ai Bot to Vercel with one click:
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/templates/next.js/nextjs-ai-BotX)
 
 ## Running locally
 
-You will need to use the environment variables [defined in `.env.example`](.env.example) to run Next.js AI BotX. It's recommended you use [Vercel Environment Variables](https://vercel.com/docs/projects/environment-variables) for this, but a `.env` file is all that is necessary.
+You will need to use the environment variables [defined in `.env.example`](.env.example) to run Next.js Ai Bot. It's recommended you use [Vercel Environment Variables](https://vercel.com/docs/projects/environment-variables) for this, but a `.env` file is all that is necessary.
 
 > Note: You should not commit your `.env` file or it will expose secrets that will allow others to control access to your various AI and authentication provider accounts.
 
