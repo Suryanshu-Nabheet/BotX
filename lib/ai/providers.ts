@@ -12,21 +12,40 @@ const openrouter = createOpenAI({
 
 export const myProvider = customProvider({
   languageModels: {
-    "moonshotai/kimi-k2:free": openrouter("moonshotai/kimi-k2:free"),
+    // Free models from models.ts
     "meta-llama/llama-3.2-3b-instruct:free": openrouter(
       "meta-llama/llama-3.2-3b-instruct:free"
     ),
-    "arliai/qwq-32b-arliai-rpr-v1:free": openrouter(
-      "arliai/qwq-32b-arliai-rpr-v1:free"
+    "meta-llama/llama-3.3-70b-instruct:free": openrouter(
+      "meta-llama/llama-3.3-70b-instruct:free"
     ),
+    "google/gemma-2-9b-it:free": openrouter("google/gemma-2-9b-it:free"),
     "google/gemma-3-4b-it:free": openrouter("google/gemma-3-4b-it:free"),
-    "qwen/qwen3-4b-it:free": openrouter("qwen/qwen3-4b-it:free"),
     "google/gemma-3-12b-it:free": openrouter("google/gemma-3-12b-it:free"),
-    "google/gemma-3n-2b-it:free": openrouter("google/gemma-3n-2b-it:free"),
-    "google/gemma-3n-4b-it:free": openrouter("google/gemma-3n-4b-it:free"),
-    "mistralai/mistral-small-3.1-24b-instruct:free": openrouter(
-      "mistralai/mistral-small-3.1-24b-instruct:free"
+    "google/gemma-3-27b-it:free": openrouter("google/gemma-3-27b-it:free"),
+    "deepseek/deepseek-chat:free": openrouter("deepseek/deepseek-chat:free"),
+    "deepseek/deepseek-r1:free": openrouter("deepseek/deepseek-r1:free"),
+    "qwen/qwen-2.5-7b-instruct:free": openrouter(
+      "qwen/qwen-2.5-7b-instruct:free"
     ),
+    "qwen/qwen-2.5-72b-instruct:free": openrouter(
+      "qwen/qwen-2.5-72b-instruct:free"
+    ),
+    "mistralai/mistral-7b-instruct:free": openrouter(
+      "mistralai/mistral-7b-instruct:free"
+    ),
+    "microsoft/phi-3-mini-128k-instruct:free": openrouter(
+      "microsoft/phi-3-mini-128k-instruct:free"
+    ),
+    "microsoft/phi-3-medium-128k-instruct:free": openrouter(
+      "microsoft/phi-3-medium-128k-instruct:free"
+    ),
+    "openchat/openchat-7b:free": openrouter("openchat/openchat-7b:free"),
+    "nousresearch/hermes-3-llama-3.1-405b:free": openrouter(
+      "nousresearch/hermes-3-llama-3.1-405b:free"
+    ),
+
+    // Internal models for utilities
     "chat-model": openrouter("meta-llama/llama-3.2-3b-instruct:free"),
     "chat-model-reasoning": openrouter(
       "google/gemini-2.0-flash-thinking-exp:free"
