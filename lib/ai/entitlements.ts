@@ -13,7 +13,17 @@ export const entitlementsByUserType: Record<UserType, Entitlements> = {
    */
   guest: {
     maxMessagesPerDay: 20,
-    availableChatModelIds: ["chat-model", "chat-model-reasoning"],
+    availableChatModelIds: [
+      "moonshotai/kimi-k2:free",
+      "meta-llama/llama-3.2-3b-instruct:free",
+      "arliai/qwq-32b-arliai-rpr-v1:free",
+      "google/gemma-3-4b-it:free",
+      "qwen/qwen3-4b-it:free",
+      "google/gemma-3-12b-it:free",
+      "google/gemma-3n-2b-it:free",
+      "google/gemma-3n-4b-it:free",
+      "mistralai/mistral-small-3.1-24b-instruct:free",
+    ],
   },
 
   /*
@@ -21,7 +31,17 @@ export const entitlementsByUserType: Record<UserType, Entitlements> = {
    */
   regular: {
     maxMessagesPerDay: 100,
-    availableChatModelIds: ["chat-model", "chat-model-reasoning"],
+    availableChatModelIds: [
+      "moonshotai/kimi-k2:free",
+      "meta-llama/llama-3.2-3b-instruct:free",
+      "arliai/qwq-32b-arliai-rpr-v1:free",
+      "google/gemma-3-4b-it:free",
+      "qwen/qwen3-4b-it:free",
+      "google/gemma-3-12b-it:free",
+      "google/gemma-3n-2b-it:free",
+      "google/gemma-3n-4b-it:free",
+      "mistralai/mistral-small-3.1-24b-instruct:free",
+    ],
   },
 
   /*

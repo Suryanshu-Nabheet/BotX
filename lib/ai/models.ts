@@ -1,4 +1,5 @@
-export const DEFAULT_CHAT_MODEL: string = "llama-3.2-3b-free";
+export const DEFAULT_CHAT_MODEL: string =
+  "meta-llama/llama-3.2-3b-instruct:free";
 
 export type ChatModel = {
   id: string;
@@ -8,43 +9,18 @@ export type ChatModel = {
 
 export const chatModels: ChatModel[] = [
   {
-    id: "kimi-k2-free",
-    name: "Kimi K2 0711",
-    description: "MoonshotAI (Free)",
-  },
-  {
-    id: "llama-3.2-3b-free",
-    name: "Llama 3.2 3B",
+    id: "meta-llama/llama-3.2-3b-instruct:free",
+    name: "Llama 3.2 3B Instruct",
     description: "Meta (Free)",
   },
   {
-    id: "qwq-32b-free",
-    name: "QwQ 32B RpR v1",
-    description: "ArliAI (Free)",
-  },
-  {
-    id: "gemma-3-4b-free",
+    id: "google/gemma-3-4b-it:free",
     name: "Gemma 3 4B",
     description: "Google (Free)",
   },
   {
-    id: "qwen3-4b-free",
-    name: "Qwen3 4B",
-    description: "Qwen (Free)",
-  },
-  {
-    id: "gemma-3-12b-free",
+    id: "google/gemma-3-12b-it:free",
     name: "Gemma 3 12B",
-    description: "Google (Free)",
-  },
-  {
-    id: "gemma-3n-2b-free",
-    name: "Gemma 3n 2B",
-    description: "Google (Free)",
-  },
-  {
-    id: "gemma-3n-4b-free",
-    name: "Gemma 3n 4B",
     description: "Google (Free)",
   },
 ];
