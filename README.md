@@ -1,7 +1,4 @@
-<a href="https://botx.ai/">
-  <img alt="BotX - Advanced AI Chat" src="app/(chat)/opengraph-image.png">
-  <h1 align="center">BotX</h1>
-</a>
+<h1 align="center">BotX</h1>
 
 <p align="center">
     BotX is a powerful, open-source AI chat platform that provides access to <strong>20+ free AI models</strong> from leading providers.
