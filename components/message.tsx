@@ -138,7 +138,7 @@ const PurePreviewMessage = ({
                       })}
                       data-testid="message-content"
                     >
-                      <Response>{sanitizeText((part as any).text)}</Response>
+                      <Response isStreaming={isLoading}>{sanitizeText((part as any).text)}</Response>
                     </MessageContent>
                   </div>
                 );
