@@ -11,6 +11,7 @@ import {
   useRef,
   useState,
 } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 import { useWindowSize } from "usehooks-ts";
 import {
@@ -20,7 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { chatModels } from "@/lib/ai/models";
+import { chatModels, getModelLogo } from "@/lib/ai/models";
 import type { Attachment, ChatMessage } from "@/lib/types";
 import { uploadFile } from "@/lib/upload";
 import { cn } from "@/lib/utils";
@@ -211,7 +212,7 @@ export function MultimodalInput({
         }
       }
       if (finalTranscript) {
-        setInput((prev) => prev + (prev ? " " : "") + finalTranscript);
+        setInput(input + (input ? " " : "") + finalTranscript);
       }
     };
 
@@ -231,11 +232,14 @@ export function MultimodalInput({
 
   return (
     <div className="relative flex w-full flex-col gap-2">
-      <div
+      <motion.div
         className={cn(
-          "relative flex w-full flex-col rounded-xl border border-input bg-background p-2 shadow-sm transition-colors focus-within:ring-1 focus-within:ring-ring",
+          "relative flex w-full flex-col rounded-xl border border-input bg-background p-2 shadow-sm transition-all duration-200 ease-in-out focus-within:border-primary/50 focus-within:ring-1 focus-within:ring-primary/50 focus-within:shadow-md",
           className
         )}
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
       >
         <form
           className="w-full"
@@ -275,16 +279,20 @@ export function MultimodalInput({
               type="file"
             />
             <Button
+              asChild
               className="size-8 text-muted-foreground hover:text-foreground"
               disabled={uploadQueue.length > 0}
               onClick={() => fileInputRef.current?.click()}
               size="icon"
               variant="ghost"
             >
-              <PaperclipIcon size={18} />
+              <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                <PaperclipIcon size={18} />
+              </motion.button>
             </Button>
 
             <Button
+              asChild
               className={cn(
                 "size-8 text-muted-foreground hover:text-foreground",
                 isListening && "animate-pulse text-red-500"
@@ -293,10 +301,13 @@ export function MultimodalInput({
               size="icon"
               variant="ghost"
             >
-              <MicIcon size={18} />
+              <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                <MicIcon size={18} />
+              </motion.button>
             </Button>
 
             <Button
+              asChild
               className={cn(
                 "size-8 text-muted-foreground hover:text-foreground",
                 isEnhancing && "animate-spin"
@@ -306,25 +317,34 @@ export function MultimodalInput({
               size="icon"
               variant="ghost"
             >
-              <SparklesIcon size={18} />
+              <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                <SparklesIcon size={18} />
+              </motion.button>
             </Button>
 
             {selectedModelId && onModelChange && (
               <Select onValueChange={onModelChange} value={selectedModelId}>
-                <SelectTrigger className="h-8 w-fit gap-2 border-none bg-muted/50 px-2 font-medium text-muted-foreground text-xs hover:bg-muted hover:text-foreground focus:ring-0">
-                  <div className="flex items-center gap-1">
-                    <span className="size-2 rounded-full bg-green-500/50" />
-                    <SelectValue placeholder="Select model" />
-                  </div>
+                <SelectTrigger className="h-8 w-fit border-none bg-muted/50 px-2 font-medium text-muted-foreground text-xs hover:bg-muted hover:text-foreground focus:ring-0">
+                  <SelectValue placeholder="Select model" />
                 </SelectTrigger>
-                <SelectContent align="start" className="w-[200px]">
+                <SelectContent align="start" className="w-[240px]">
                   {chatModels.map((model) => (
                     <SelectItem
                       className="text-xs"
                       key={model.id}
                       value={model.id}
                     >
-                      {model.name}
+                      <div className="flex items-center gap-2">
+                        <div className="relative size-4 shrink-0">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            alt={model.name}
+                            className="object-contain"
+                            src={getModelLogo(model.id)}
+                          />
+                        </div>
+                        <span>{model.name}</span>
+                      </div>
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -334,21 +354,36 @@ export function MultimodalInput({
 
           <div className="flex flex-row items-center gap-2">
             {status === "streaming" ? (
-              <Button className="size-8 rounded-full p-0" onClick={stop}>
-                <StopIcon size={14} />
+              <Button
+                asChild
+                className="size-8 rounded-full p-0"
+                onClick={stop}
+              >
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  <StopIcon size={14} />
+                </motion.button>
               </Button>
             ) : (
               <Button
+                asChild
                 className="size-8 rounded-full p-0"
                 disabled={!input.trim() && attachments.length === 0}
                 onClick={submitForm}
               >
-                <ArrowUpIcon size={14} />
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  <ArrowUpIcon size={14} />
+                </motion.button>
               </Button>
             )}
           </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }

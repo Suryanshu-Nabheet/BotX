@@ -4,6 +4,7 @@ import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { useSWRConfig } from "swr";
 import { unstable_serialize } from "swr/infinite";
@@ -69,68 +70,74 @@ export function AppSidebar() {
       <Sidebar className="group-data-[side=left]:border-r-0">
         <SidebarHeader>
           <SidebarMenu>
-            <div className="flex flex-row items-center justify-between px-2 py-3">
-              <Link
-                className="group flex flex-row items-center gap-3"
-                href="/"
-                onClick={() => {
-                  setOpenMobile(false);
-                }}
-              >
-                <span className="cursor-pointer rounded-md font-bold text-2xl transition-opacity hover:opacity-80">
-                  <span className="text-foreground">Bot</span>
-                  <span className="text-blue-600">X</span>
-                </span>
-              </Link>
-              {mounted && (
-                <div className="flex flex-row gap-1">
-                  {user && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="flex flex-row items-center justify-between px-2 py-3">
+                <Link
+                  className="group flex flex-row items-center gap-3"
+                  href="/"
+                  onClick={() => {
+                    setOpenMobile(false);
+                  }}
+                >
+                  <span className="cursor-pointer rounded-md font-bold text-2xl transition-opacity hover:opacity-80">
+                    <span className="text-foreground">Bot</span>
+                    <span className="text-blue-600">X</span>
+                  </span>
+                </Link>
+                {mounted && (
+                  <div className="flex flex-row gap-1">
+                    {user && (
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            className="h-8 p-1 md:h-fit md:p-2"
+                            onClick={() => setShowDeleteAllDialog(true)}
+                            type="button"
+                            variant="ghost"
+                          >
+                            <TrashIcon />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent align="end" className="hidden md:block">
+                          Delete All Chats
+                        </TooltipContent>
+                      </Tooltip>
+                    )}
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <Button
                           className="h-8 p-1 md:h-fit md:p-2"
-                          onClick={() => setShowDeleteAllDialog(true)}
+                          onClick={() => {
+                            setOpenMobile(false);
+                            router.push("/");
+                            router.refresh();
+                          }}
                           type="button"
                           variant="ghost"
                         >
-                          <TrashIcon />
+                          <PlusIcon />
                         </Button>
                       </TooltipTrigger>
                       <TooltipContent align="end" className="hidden md:block">
-                        Delete All Chats
+                        New Chat
                       </TooltipContent>
                     </Tooltip>
-                  )}
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button
-                        className="h-8 p-1 md:h-fit md:p-2"
-                        onClick={() => {
-                          setOpenMobile(false);
-                          router.push("/");
-                          router.refresh();
-                        }}
-                        type="button"
-                        variant="ghost"
-                      >
-                        <PlusIcon />
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent align="end" className="hidden md:block">
-                      New Chat
-                    </TooltipContent>
-                  </Tooltip>
-                </div>
-              )}
-            </div>
-            <div className="mt-2 px-2">
-              <div className="flex items-center justify-between rounded-md border p-2 text-sm">
-                <span className="font-medium">Subscriptions</span>
-                <span className="rounded-full bg-muted px-2 py-0.5 text-muted-foreground text-xs">
-                  Coming Soon
-                </span>
+                  </div>
+                )}
               </div>
-            </div>
+              <div className="mt-2 px-2">
+                <div className="flex items-center justify-between rounded-md border p-2 text-sm">
+                  <span className="font-medium">Subscriptions</span>
+                  <span className="rounded-full bg-muted px-2 py-0.5 text-muted-foreground text-xs">
+                    Coming Soon
+                  </span>
+                </div>
+              </div>
+            </motion.div>
           </SidebarMenu>
         </SidebarHeader>
         <SidebarContent>

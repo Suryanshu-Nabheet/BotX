@@ -59,11 +59,13 @@ const PurePreviewMessage = ({
 
   return (
     <motion.div
-      animate={{ opacity: 1 }}
+      animate={{ opacity: 1, y: 0 }}
       className="group/message w-full"
       data-role={message.role}
       data-testid={`message-${message.role}`}
-      initial={{ opacity: 0 }}
+      initial={{ opacity: 0, y: 10 }}
+      layout
+      transition={{ duration: 0.3, ease: "easeOut" }}
     >
       <div
         className={cn("flex w-full items-start gap-2 md:gap-3", {
@@ -316,13 +318,14 @@ export const ThinkingMessage = () => {
 
   return (
     <motion.div
-      animate={{ opacity: 1 }}
+      animate={{ opacity: 1, y: 0 }}
       className="group/message w-full"
       data-role={role}
       data-testid="message-assistant-loading"
-      exit={{ opacity: 0, transition: { duration: 0.5 } }}
-      initial={{ opacity: 0 }}
-      transition={{ duration: 0.2 }}
+      exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.2 } }}
+      initial={{ opacity: 0, y: 10 }}
+      layout
+      transition={{ duration: 0.3, ease: "easeOut" }}
     >
       <div className="flex items-start justify-start gap-3">
         <div className="-mt-1 flex size-8 shrink-0 items-center justify-center rounded-full bg-background ring-1 ring-border">

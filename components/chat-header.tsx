@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { memo } from "react";
 import { useWindowSize } from "usehooks-ts";
+import { motion } from "framer-motion";
 import { SidebarToggle } from "@/components/sidebar-toggle";
 import { Button } from "@/components/ui/button";
 import { PlusIcon } from "./icons";
@@ -24,7 +25,12 @@ function PureChatHeader({
   const { width: windowWidth } = useWindowSize();
 
   return (
-    <header className="sticky top-0 z-10 flex items-center gap-3 border-b bg-background/95 px-3 py-2.5 backdrop-blur supports-[backdrop-filter]:bg-background/60 md:px-4">
+    <motion.header
+      initial={{ y: -20, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
+      className="sticky top-0 z-10 flex items-center gap-3 border-b bg-background/95 px-3 py-2.5 backdrop-blur supports-[backdrop-filter]:bg-background/60 md:px-4"
+    >
       <SidebarToggle />
 
       {(!open || windowWidth < 768) && (
@@ -48,7 +54,7 @@ function PureChatHeader({
           selectedVisibilityType={selectedVisibilityType}
         />
       )}
-    </header>
+    </motion.header>
   );
 }
 

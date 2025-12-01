@@ -110,3 +110,17 @@ export const chatModels: ChatModel[] = [
   },
 ];
 
+export function getModelLogo(modelId: string): string {
+  if (modelId.includes("meta")) return "/icons/meta.svg";
+  if (modelId.includes("google")) return "/icons/google.svg";
+  if (modelId.includes("deepseek")) return "/icons/deepseek.svg";
+  if (modelId.includes("qwen")) return "/icons/qwen.svg";
+  if (modelId.includes("mistral")) return "/icons/mistral.svg";
+  if (modelId.includes("microsoft")) return "/icons/microsoft.svg";
+  if (modelId.includes("openchat")) return "/icons/openchat.svg";
+  if (modelId.includes("nous")) return "/icons/meta.svg";
+  if (modelId.includes("moonshot")) return "/icons/moonshot.svg";
+  
+  // Default fallback
+  return "/icons/meta.svg";
+}
