@@ -4,12 +4,16 @@ export const navLinks = [
     label: "Features",
   },
   {
-    href: "#get-started",
-    label: "Get Started",
+    href: "#integrations",
+    label: "Integrations",
   },
   {
     href: "#pricing",
     label: "Pricing",
+  },
+  {
+    href: "#faqs",
+    label: "FAQs",
   },
 ];
 

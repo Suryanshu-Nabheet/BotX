@@ -1,96 +1,84 @@
 "use client";
+
 import { motion } from "framer-motion";
-import HeroVideoDialog from "../magicui/hero-video-dialog";
-import { GetStartedButton, ShinyButton } from "./HeroButtons";
+import Link from "next/link";
+import Image from "next/image";
 
-const containerVariants = {
-  initial: { opacity: 0 },
-  animate: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.2,
-    },
-  },
-};
-
-const itemVariants = {
-  initial: {
-    opacity: 0,
-    y: 20,
-    filter: "blur(10px)",
-  },
-  animate: {
-    opacity: 1,
-    y: 0,
-    filter: "blur(0px)",
-    transition: {
-      duration: 0.8,
-    },
-  },
-};
-
-const Hero = () => {
+export default function Hero() {
   return (
-    <section className="relative py-16 md:py-20">
-      {/* grain effect */}
-      <div className="grain-overlay absolute inset-0 top-40" />
-      <motion.div animate="animate" initial="initial" variants={itemVariants}>
-        <ShinyButton />
-      </motion.div>
-      <motion.div
-        animate="animate"
-        className="mt-10 flex flex-col items-center justify-center gap-6 text-center [mask-image:linear-gradient(to_bottom,black_75%,transparent)]"
-        initial="initial"
-        variants={containerVariants}
-      >
-        <motion.h1
-          className="font-semibold text-4xl md:text-6xl"
-          variants={itemVariants}
-        >
-          The Fastest AI Bot
-        </motion.h1>
+    <section className="relative flex flex-col items-center justify-center border-b border-neutral-200/80 dark:border-neutral-800/80">
+      <div className="absolute inset-x-0 bottom-0 h-px w-full">
+        <div className="absolute mx-auto h-px w-40 bg-gradient-to-r from-transparent via-blue-500 to-transparent left-0 right-0" />
+      </div>
+
+      {/* Content */}
+      <div className="px-4 py-10 md:py-20">
+        <h1 className="relative z-10 mx-auto max-w-4xl text-center text-2xl font-bold text-slate-700 md:text-4xl lg:text-7xl dark:text-slate-300">
+          {"The Fastest AI Bot with Multiple Models"
+            .split(" ")
+            .map((word, index) => (
+              <motion.span
+                key={index}
+                initial={{ opacity: 0, filter: "blur(4px)", y: 10 }}
+                animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+                transition={{
+                  duration: 0.3,
+                  delay: index * 0.1,
+                  ease: "easeInOut",
+                }}
+                className="mr-2 inline-block"
+              >
+                {word}
+              </motion.span>
+            ))}
+        </h1>
+
         <motion.p
-          className="mx-auto max-w-md text-base text-muted-foreground max-md:max-w-xs md:text-lg"
-          variants={itemVariants}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3, delay: 0.8 }}
+          className="relative z-10 mx-auto max-w-xl py-4 text-center text-lg font-normal text-neutral-600 dark:text-neutral-400"
         >
           Experience the fastest, most versatile AI chat app built to deliver
-          instant, intelligent responses.
+          instant, intelligent responses. Choose from multiple AI models and get started in seconds.
         </motion.p>
+
         <motion.div
-          className="mt-2 flex items-center justify-center"
-          variants={itemVariants}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3, delay: 1 }}
+          className="relative z-10 mt-8 flex flex-wrap items-center justify-center gap-4"
         >
-          <GetStartedButton />
+          <Link href="/ask">
+            <button className="w-60 transform rounded-lg bg-black px-6 py-2 font-medium text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200">
+              Get Started
+            </button>
+          </Link>
+          <Link href="#features">
+            <button className="w-60 transform rounded-lg border border-gray-300 bg-white px-6 py-2 font-medium text-black transition-all duration-300 hover:-translate-y-0.5 hover:bg-gray-100 dark:border-gray-700 dark:bg-black dark:text-white dark:hover:bg-gray-900">
+              Explore Features
+            </button>
+          </Link>
         </motion.div>
-        {/* hero video */}
+
         <motion.div
-          className="relative mt-14 rounded-lg lg:mt-20"
-          variants={itemVariants}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, delay: 1.2 }}
+          className="relative z-10 mt-20 rounded-3xl border border-neutral-200 bg-neutral-100 p-4 shadow-md dark:border-neutral-800 dark:bg-neutral-900"
         >
-          <HeroVideoDialog
-            animationStyle="from-center"
-            thumbnailAlt="Hero Video"
-            thumbnailSrc="/hero-thumbnail.png"
-            videoSrc="https://www.youtube.com/embed/QLvIoi2s1zY?si=IhZ2-lZ4k21M6Nbu"
-          />
+          <div className="w-full overflow-hidden rounded-xl border border-gray-300 dark:border-gray-700">
+            <Image
+              src="/hero-thumbnail.png"
+              alt="BotX Chat Interface Preview"
+              className="h-auto w-full"
+              height={1000}
+              width={1000}
+              priority
+            />
+          </div>
         </motion.div>
-        {/* hero gradient */}
-        <motion.div
-          animate={{
-            opacity: 1,
-            transition: {
-              duration: 0.8,
-              delay: 0.8,
-            },
-          }}
-          className="-translate-x-1/2 -z-10 absolute top-90 left-1/2 rounded-full bg-[radial-gradient(circle,_rgba(59,130,246,1)_40%,_#60a5fa_50%,_transparent_90%)] opacity-90 blur-[80px] max-md:hidden md:h-[400px] md:w-[400px] lg:h-[900px] lg:w-[900px]"
-          initial={{
-            opacity: 0,
-          }}
-        />
-      </motion.div>
+      </div>
     </section>
   );
-};
-
-export default Hero;
+}
