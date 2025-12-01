@@ -16,11 +16,12 @@ const partSchema = z.union([textPartSchema, filePartSchema]);
 
 export const postRequestBodySchema = z.object({
   id: z.string().uuid(),
-  message: z.object({
-    id: z.string().uuid(),
-    role: z.enum(["user"]),
-    parts: z.array(partSchema),
-  }),
+  messages: z.array(z.object({
+    id: z.string(),
+    role: z.enum(["system", "user", "assistant", "data"]),
+    content: z.string().optional(),
+    parts: z.array(partSchema).optional(),
+  })),
   selectedChatModel: z.string(),
   selectedVisibilityType: z.enum(["public", "private"]),
   selectedMode: z.enum(["general", "coding", "reasoning", "vision"]).optional(),

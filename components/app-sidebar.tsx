@@ -3,7 +3,7 @@
 import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useSWRConfig } from "swr";
 import { unstable_serialize } from "swr/infinite";
@@ -40,6 +40,12 @@ export function AppSidebar() {
   const { mutate } = useSWRConfig();
   const { user } = useUser();
   const [showDeleteAllDialog, setShowDeleteAllDialog] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  // Only render interactive elements on client side to avoid hydration errors
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleDeleteAll = () => {
     const deletePromise = fetch("/api/history", {
@@ -76,44 +82,46 @@ export function AppSidebar() {
                   <span className="text-blue-600">X</span>
                 </span>
               </Link>
-              <div className="flex flex-row gap-1">
-                {user && (
+              {mounted && (
+                <div className="flex flex-row gap-1">
+                  {user && (
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          className="h-8 p-1 md:h-fit md:p-2"
+                          onClick={() => setShowDeleteAllDialog(true)}
+                          type="button"
+                          variant="ghost"
+                        >
+                          <TrashIcon />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent align="end" className="hidden md:block">
+                        Delete All Chats
+                      </TooltipContent>
+                    </Tooltip>
+                  )}
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <Button
                         className="h-8 p-1 md:h-fit md:p-2"
-                        onClick={() => setShowDeleteAllDialog(true)}
+                        onClick={() => {
+                          setOpenMobile(false);
+                          router.push("/");
+                          router.refresh();
+                        }}
                         type="button"
                         variant="ghost"
                       >
-                        <TrashIcon />
+                        <PlusIcon />
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent align="end" className="hidden md:block">
-                      Delete All Chats
+                      New Chat
                     </TooltipContent>
                   </Tooltip>
-                )}
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button
-                      className="h-8 p-1 md:h-fit md:p-2"
-                      onClick={() => {
-                        setOpenMobile(false);
-                        router.push("/");
-                        router.refresh();
-                      }}
-                      type="button"
-                      variant="ghost"
-                    >
-                      <PlusIcon />
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent align="end" className="hidden md:block">
-                    New Chat
-                  </TooltipContent>
-                </Tooltip>
-              </div>
+                </div>
+              )}
             </div>
             <div className="mt-2 px-2">
               <div className="flex items-center justify-between rounded-md border p-2 text-sm">

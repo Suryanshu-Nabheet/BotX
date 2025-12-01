@@ -22,7 +22,7 @@ export default async function Layout({
         strategy="beforeInteractive"
       />
       <DataStreamProvider>
-        <SidebarProvider defaultOpen={!isCollapsed}>
+        <SidebarProvider defaultOpen={!isCollapsed} suppressHydrationWarning>
           <AppSidebar />
           <SidebarInset>{children}</SidebarInset>
         </SidebarProvider>

@@ -2,14 +2,20 @@
 
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { PlusIcon } from "./icons";
 
 export function SidebarHistory() {
   const router = useRouter();
   const { user } = useUser();
+  const [mounted, setMounted] = useState(false);
 
-  if (!user) {
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!user || !mounted) {
     return null;
   }
 

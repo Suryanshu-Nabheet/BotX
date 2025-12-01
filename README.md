@@ -1,17 +1,19 @@
-<a href="https://chat.vercel.ai/">
-  <img alt="Next.js 14 and App Router-ready Ai Bot." src="app/(chat)/opengraph-image.png">
-  <h1 align="center">Chat SDK</h1>
+<a href="https://botx.ai/">
+  <img alt="BotX - Advanced AI Chat" src="app/(chat)/opengraph-image.png">
+  <h1 align="center">BotX</h1>
 </a>
 
 <p align="center">
-    Chat SDK is a free, open-source template built with Next.js and the AI SDK that helps you quickly build powerful BotX applications.
+    BotX is a powerful, open-source AI chat platform that provides access to <strong>20+ free AI models</strong> from leading providers.
+    <br/>
+    Switch between models seamlessly - all powered by OpenRouter's free tier.
+    <br/>
+    <strong>Built by Suryanshu Nabheet</strong>
 </p>
 
 <p align="center">
-  <a href="https://chat-sdk.dev"><strong>Read Docs</strong></a> ·
   <a href="#features"><strong>Features</strong></a> ·
-  <a href="#model-providers"><strong>Model Providers</strong></a> ·
-  <a href="#deploy-your-own"><strong>Deploy Your Own</strong></a> ·
+  <a href="#available-models"><strong>Available Models</strong></a> ·
   <a href="#running-locally"><strong>Running locally</strong></a>
 </p>
 <br/>
@@ -34,33 +36,58 @@
 - [Auth.js](https://authjs.dev)
   - Simple and secure authentication
 
-## Model Providers
+## Available Models
 
-This template uses the [Vercel AI Gateway](https://vercel.com/docs/ai-gateway) to access multiple AI models through a unified interface. The default configuration includes [xAI](https://x.ai) models (`grok-2-vision-1212`, `grok-3-mini`) routed through the gateway.
+BotX provides access to **20+ completely free AI models** via OpenRouter. No credits required, no paid tiers - just pure free access to cutting-edge AI:
 
-### AI Gateway Authentication
+### Meta (4 models)
 
-**For Vercel deployments**: Authentication is handled automatically via OIDC tokens.
+- **Llama 3.2 3B Instruct** - Fast, efficient for general tasks
+- **Llama 3.3 70B Instruct** - Powerful reasoning and complex tasks
 
-**For non-Vercel deployments**: You need to provide an AI Gateway API key by setting the `AI_GATEWAY_API_KEY` environment variable in your `.env.local` file.
+### Google (8 models)
 
-With the [AI SDK](https://ai-sdk.dev/docs/introduction), you can also switch to direct LLM providers like [OpenAI](https://openai.com), [Anthropic](https://anthropic.com), [Cohere](https://cohere.com/), and [many more](https://ai-sdk.dev/providers/ai-sdk-providers) with just a few lines of code.
+- **Gemma 2 9B** - Balanced performance
+- **Gemma 3 4B** - Multimodal with vision support
+- **Gemma 3 12B** - Enhanced reasoning and math
+- **Gemma 3 27B** - Largest Gemma model
+- **Gemma 3n 2B** - Optimized for mobile/low-resource
+- **Gemma 3n 4B** - Efficient multimodal processing
 
-## Deploy Your Own
+### DeepSeek (2 models)
 
-You can deploy your own version of the Next.js Ai Bot to Vercel with one click:
+- **DeepSeek Chat** - Advanced conversational AI
+- **DeepSeek R1** - Reasoning-focused model
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/templates/next.js/nextjs-ai-BotX)
+### Qwen (3 models)
+
+- **Qwen 2.5 7B Instruct** - Multilingual support
+- **Qwen 2.5 72B Instruct** - High-performance reasoning
+- **Qwen3 4B** - Dual-mode thinking architecture
+
+### Mistral AI (2 models)
+
+- **Mistral 7B Instruct** - Efficient instruction following
+- **Mistral Small 3.1 24B** - Multimodal with 128K context
+
+### Microsoft (2 models)
+
+- **Phi-3 Mini 128K** - Compact with long context
+- **Phi-3 Medium 128K** - Enhanced capabilities
+
+### Others (3 models)
+
+- **OpenChat 7B** - Community-driven chat model
+- **Hermes 3 - Llama 3.1 405B** (Nous Research) - Massive parameter count
+- **Kimi K2 0711** (MoonshotAI) - 1T parameters MoE model
+
+All models are accessible through a simple dropdown in the chat interface. Switch between them instantly to find the perfect model for your task!
 
 ## Running locally
 
-You will need to use the environment variables [defined in `.env.example`](.env.example) to run Next.js Ai Bot. It's recommended you use [Vercel Environment Variables](https://vercel.com/docs/projects/environment-variables) for this, but a `.env` file is all that is necessary.
+You will need to use the environment variables [defined in `.env.example`](.env.example) to run BotX.
 
 > Note: You should not commit your `.env` file or it will expose secrets that will allow others to control access to your various AI and authentication provider accounts.
-
-1. Install Vercel CLI: `npm i -g vercel`
-2. Link local instance with Vercel and GitHub accounts (creates `.vercel` directory): `vercel link`
-3. Download your environment variables: `vercel env pull`
 
 ```bash
 pnpm install
@@ -68,4 +95,4 @@ pnpm db:migrate # Setup database or apply latest database changes
 pnpm dev
 ```
 
-Your app template should now be running on [localhost:3000](http://localhost:3000).
+Your app should now be running on [localhost:3000](http://localhost:3000).

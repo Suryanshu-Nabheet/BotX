@@ -19,7 +19,7 @@ export async function POST(req: Request) {
           "X-Title": "BotX", // Optional. Shows in rankings on openrouter.ai.
         },
         body: JSON.stringify({
-          model: "meta-llama/llama-3.1-70b-instruct:free",
+          model: "meta-llama/llama-3.1-8b-instruct:free",
           messages: [
             {
               role: "system",
@@ -36,7 +36,9 @@ export async function POST(req: Request) {
     );
 
     if (!response.ok) {
-      throw new Error("Failed to fetch from OpenRouter");
+      const errorText = await response.text();
+      console.error("[OPENROUTER_ERROR]", response.status, errorText);
+      throw new Error(`Failed to fetch from OpenRouter: ${response.status} ${errorText}`);
     }
 
     const data = await response.json();
@@ -45,6 +47,11 @@ export async function POST(req: Request) {
     return NextResponse.json({ enhancedPrompt });
   } catch (error) {
     console.error("[ENHANCE_PROMPT_ERROR]", error);
-    return new NextResponse("Internal Error", { status: 500 });
+    
+    if (error instanceof Error && error.message.includes("data policy")) {
+        return new NextResponse("To use free models, enable data logging in OpenRouter settings.", { status: 403 });
+    }
+
+    return new NextResponse(error instanceof Error ? error.message : "Internal Error", { status: 500 });
   }
 }

@@ -43,22 +43,28 @@ const getTokenlensCatalog = cache(
 
 export async function POST(request: Request) {
   let requestBody: PostRequestBody;
+  let json: any;
 
   try {
-    const json = await request.json();
+    json = await request.json();
     requestBody = postRequestBodySchema.parse(json);
-  } catch (_) {
+  } catch (error) {
+    console.error("[CHAT_API_ERROR] Schema validation failed:", error);
+    if (json) {
+      console.error("[CHAT_API_ERROR] Request body keys:", Object.keys(json));
+      console.error("[CHAT_API_ERROR] Messages:", json.messages?.length || 0);
+    }
     return new ChatSDKError("bad_request:api").toResponse();
   }
 
   try {
     const {
-      message,
+      messages,
       selectedChatModel,
       selectedMode,
     }: {
       id: string;
-      message: ChatMessage;
+      messages: Array<any>;
       selectedChatModel: ChatModel["id"];
       selectedMode?: "general" | "coding" | "reasoning" | "vision";
     } = requestBody;
@@ -69,8 +75,16 @@ export async function POST(request: Request) {
       return new ChatSDKError("unauthorized:chat").toResponse();
     }
 
-    // No database - just stream the response
-    const uiMessages = [message];
+    // Validate messages array
+    if (!messages || !Array.isArray(messages)) {
+      console.error("[CHAT_API_ERROR] Invalid messages - not an array");
+      return new ChatSDKError("bad_request:api").toResponse();
+    }
+
+    if (messages.length === 0) {
+      console.error("[CHAT_API_ERROR] No messages provided");
+      return new ChatSDKError("bad_request:api").toResponse();
+    }
 
     const { longitude, latitude, city, country } = geolocation(request);
 
@@ -90,7 +104,10 @@ export async function POST(request: Request) {
     });
 
     const isGemma = selectedChatModel.includes("gemma");
-    let modelMessages = convertToModelMessages(uiMessages);
+
+    // The AI SDK's convertToModelMessages expects UIMessage format
+    // which is what we receive from the client
+    let modelMessages = convertToModelMessages(messages as any);
 
     if (isGemma) {
       modelMessages = [

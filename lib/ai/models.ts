@@ -39,6 +39,16 @@ export const chatModels: ChatModel[] = [
     description: "Google (Free)",
   },
   {
+    id: "google/gemma-3n-2b-it:free",
+    name: "Gemma 3n 2B",
+    description: "Google (Free)",
+  },
+  {
+    id: "google/gemma-3n-4b-it:free",
+    name: "Gemma 3n 4B",
+    description: "Google (Free)",
+  },
+  {
     id: "deepseek/deepseek-chat:free",
     name: "DeepSeek Chat",
     description: "DeepSeek (Free)",
@@ -59,8 +69,18 @@ export const chatModels: ChatModel[] = [
     description: "Qwen (Free)",
   },
   {
+    id: "qwen/qwen3-4b:free",
+    name: "Qwen3 4B",
+    description: "Qwen (Free)",
+  },
+  {
     id: "mistralai/mistral-7b-instruct:free",
     name: "Mistral 7B Instruct",
+    description: "Mistral AI (Free)",
+  },
+  {
+    id: "mistralai/mistral-small-3.1-24b:free",
+    name: "Mistral Small 3.1 24B",
     description: "Mistral AI (Free)",
   },
   {
@@ -83,4 +103,10 @@ export const chatModels: ChatModel[] = [
     name: "Hermes 3 - Llama 3.1 405B",
     description: "Nous Research (Free)",
   },
+  {
+    id: "moonshotai/kimi-k2-0711:free",
+    name: "Kimi K2 0711",
+    description: "MoonshotAI (Free)",
+  },
 ];
+

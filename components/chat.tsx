@@ -21,6 +21,7 @@ import { useArtifactSelector } from "@/hooks/use-artifact";
 import { useAutoResume } from "@/hooks/use-auto-resume";
 import { useChatVisibility } from "@/hooks/use-chat-visibility";
 import { useScrollToBottom } from "@/hooks/use-scroll-to-bottom";
+import { chatModels } from "@/lib/ai/models";
 import { ChatSDKError } from "@/lib/errors";
 import type { Attachment, ChatMessage } from "@/lib/types";
 import type { AppUsage } from "@/lib/usage";
@@ -93,34 +94,28 @@ export function Chat({
       api: "/api/chat",
       fetch: fetchWithErrorHandlers,
       prepareSendMessagesRequest(request) {
-        const lastMessage = request.messages.at(-1);
-        const parts = [];
-
-        if ((lastMessage as any)?.content) {
-          parts.push({ type: "text", text: (lastMessage as any).content });
-        }
-
-        // Handle attachments if they exist in the message data or experimental_attachments
-        // Note: This depends on how useChat handles the data passed in sendMessage
-        if ((lastMessage as any)?.data?.attachments) {
-          const attachments = (lastMessage as any).data.attachments;
-          attachments.forEach((attachment: any) => {
-            parts.push({
-              type: "file",
-              mediaType: attachment.contentType,
-              name: attachment.name,
-              url: attachment.url,
-            });
-          });
-        }
+        // Transform messages to proper UIMessage format with parts
+        const transformedMessages = request.messages.map((msg: any) => {
+          // If message already has parts, use it as-is
+          if (msg.parts) {
+            return msg;
+          }
+          
+          // If message has content string, convert to parts format
+          if (msg.content) {
+            return {
+              ...msg,
+              parts: [{ type: "text", text: msg.content }],
+            };
+          }
+          
+          return msg;
+        });
 
         return {
           body: {
             id: request.id,
-            message: {
-              ...lastMessage,
-              parts,
-            },
+            messages: transformedMessages,
             selectedChatModel: currentModelIdRef.current,
             selectedVisibilityType: visibilityType,
             ...request.body,
@@ -217,7 +212,7 @@ export function Chat({
           votes={votes}
         />
 
-        <div className="sticky bottom-0 z-1 mx-auto flex w-full max-w-4xl gap-2 border-t-0 bg-background px-2 pb-3 md:px-4 md:pb-4">
+        <div className="sticky bottom-0 z-1 mx-auto flex w-full max-w-4xl flex-col gap-2 border-t-0 bg-background px-2 pb-3 md:px-4 md:pb-4">
           {!isReadonly && (
             <MultimodalInput
               attachments={attachments}
@@ -234,6 +229,16 @@ export function Chat({
               stop={stop}
             />
           )}
+          <div className="flex items-center justify-center gap-1 text-muted-foreground text-xs">
+            <span>Powered by</span>
+            <span className="font-medium">
+              {chatModels.find((m) => m.id === currentModelId)?.description || "AI"}
+            </span>
+            <span>via</span>
+            <span className="font-semibold text-foreground">BotX</span>
+            <span>by</span>
+            <span className="font-medium text-blue-600">Suryanshu Nabheet</span>
+          </div>
         </div>
       </div>
 
@@ -265,7 +270,7 @@ export function Chat({
             <AlertDialogDescription>
               This application requires{" "}
               {process.env.NODE_ENV === "production" ? "the owner" : "you"} to
-              activate Vercel AI Gateway.
+              activate the AI Gateway.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

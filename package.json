@@ -2,6 +2,7 @@
   "name": "botx",
   "version": "3.1.0",
   "private": true,
+  "author": "Suryanshu Nabheet",
   "scripts": {
     "dev": "next dev --turbo",
     "build": "next build",

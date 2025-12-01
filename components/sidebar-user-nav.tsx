@@ -1,12 +1,18 @@
 "use client";
 
 import { UserButton, useUser } from "@clerk/nextjs";
+import { useEffect, useState } from "react";
 import { SidebarMenu, SidebarMenuItem } from "@/components/ui/sidebar";
 
 export function SidebarUserNav() {
   const { user, isLoaded } = useUser();
+  const [mounted, setMounted] = useState(false);
 
-  if (!isLoaded) {
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!isLoaded || !mounted) {
     return null;
   }
 
