@@ -169,7 +169,13 @@ export default function Integrations() {
   const tailwindRef = useRef<HTMLDivElement>(null);
 
   return (
-    <section className="relative w-full py-16" id="integrations">
+    <section
+      className="relative w-full py-16 border-b border-neutral-200/80 dark:border-neutral-800/80"
+      id="integrations"
+    >
+      <div className="absolute inset-x-0 bottom-0 h-px w-full">
+        <div className="absolute mx-auto h-px w-40 bg-gradient-to-r from-transparent via-blue-500 to-transparent left-0 right-0" />
+      </div>
       <div className="text-center mb-12">
         <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
           Powered by Modern Technologies

@@ -10,7 +10,7 @@ import MobileNav from "./MobileNav";
 const Navbar = () => {
   return (
     <motion.header className="sticky top-0 z-40 bg-background/80 py-4 backdrop-blur-md border-b border-neutral-200/80 dark:border-neutral-800/80">
-      <nav className="mx-auto flex w-full items-center justify-between px-6 md:px-8">
+      <nav className="mx-auto flex w-full items-center justify-between px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
         {/* logo */}
         <Link className="flex items-center gap-1.5" href="#">
           <Image

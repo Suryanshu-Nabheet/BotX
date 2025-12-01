@@ -11,15 +11,11 @@ import Testimonials from "@/app/Landing/components/testimonials/Testimonials";
 export default function LandingPage() {
   return (
     <div className="relative flex min-h-screen flex-col">
-      <div className="relative mx-auto flex w-full max-w-7xl flex-1 flex-col border-x border-neutral-200/80 bg-background dark:border-neutral-800/80">
-        {/* Top Gradient Accent for Borders */}
-        <div className="absolute top-0 left-[-1px] h-40 w-px bg-gradient-to-b from-transparent via-blue-500 to-transparent" />
-        <div className="absolute top-0 right-[-1px] h-40 w-px bg-gradient-to-b from-transparent via-blue-500 to-transparent" />
-
+      <div className="relative flex w-full flex-1 flex-col bg-background">
         <Navbar />
         <main className="flex-1">
           <Hero />
-          <div className="px-6 md:px-8 lg:px-12">
+          <div className="px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
             <Features />
             <Integrations />
             <Testimonials />
