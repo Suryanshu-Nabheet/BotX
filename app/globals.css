@@ -207,6 +207,8 @@
 
   html {
     overflow-x: hidden;
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px; /* Account for sticky navbar */
   }
 }
 

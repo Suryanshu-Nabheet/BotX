@@ -3,7 +3,10 @@ import { Button } from "../ui/button";
 
 const CTA = () => {
   return (
-    <section className="relative my-5 overflow-hidden py-12 md:my-10 md:py-20">
+    <section className="relative my-5 overflow-hidden py-12 md:my-10 md:py-20 border-b border-neutral-200/80 dark:border-neutral-800/80">
+      <div className="absolute inset-x-0 bottom-0 h-px w-full z-20">
+        <div className="absolute mx-auto h-px w-40 bg-gradient-to-r from-transparent via-blue-500 to-transparent left-0 right-0" />
+      </div>
       <div className="grain-overlay pointer-events-none absolute inset-0 top-20" />
       <div className="-z-10 absolute inset-0 top-90 flex items-center justify-center max-md:hidden">
         <div className="rounded-full bg-[radial-gradient(circle,_rgba(59,130,246,1)_60%,_#3b82f6_40%,_#60a5fa_75%,_transparent_90%)] opacity-100 blur-[120px] md:size-80" />
