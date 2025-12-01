@@ -115,9 +115,31 @@ export async function POST(request: Request) {
 
     const isGemma = selectedChatModel.includes("gemma");
 
+    // Clean messages: remove internal AI SDK parts that OpenRouter doesn't understand
+    // Keep only the essential content for the conversation
+    const cleanedMessages = messages.map((msg: any) => {
+      // For user messages, keep as-is (they're simple)
+      if (msg.role === "user") {
+        return msg;
+      }
+      
+      // For assistant messages, extract only text content from parts
+      if (msg.role === "assistant" && msg.parts) {
+        const textParts = msg.parts.filter((part: any) => part.type === "text");
+        const textContent = textParts.map((part: any) => part.text).join("");
+        
+        return {
+          ...msg,
+          content: textContent || msg.content,
+          parts: undefined, // Remove parts to avoid OpenRouter validation issues
+        };
+      }
+      
+      return msg;
+    });
+
     // The AI SDK's convertToModelMessages expects UIMessage format
-    // which is what we receive from the client
-    let modelMessages = convertToModelMessages(messages as any);
+    let modelMessages = convertToModelMessages(cleanedMessages as any);
 
     if (isGemma) {
       modelMessages = [
