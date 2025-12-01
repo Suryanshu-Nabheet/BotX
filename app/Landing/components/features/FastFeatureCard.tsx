@@ -7,7 +7,6 @@ import { motion, useInView } from "framer-motion";
 import { aiMessage, userMessge } from "@/constants";
 import FeatureCard from "./FeatureCard";
 import Image from "next/image";
-import { TypingAnimation } from "../magicui/typing-animation";
 
 const FastFeatureCard = () => {
   return (
@@ -32,16 +31,17 @@ interface MessageProps {
 const Message = ({ role, message, delay }: MessageProps) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
-  const [isTypingBot, setIsTypingBot] = useState(true);
+  const [showTyping, setShowTyping] = useState(true);
 
   useEffect(() => {
-    if (isInView) {
+    if (isInView && role === "ai") {
+      // Show typing indicator for 1.5 seconds before starting actual typing
       const timer = setTimeout(() => {
-        setIsTypingBot(false);
-      }, 2000 + delay * 1000);
+        setShowTyping(false);
+      }, 1500 + delay * 1000);
       return () => clearTimeout(timer);
     }
-  }, [isInView, delay]);
+  }, [isInView, delay, role]);
 
   return (
     <motion.div
@@ -66,8 +66,6 @@ const Message = ({ role, message, delay }: MessageProps) => {
         ) : (
           <div className="flex items-center justify-center">
             <Image
-              quality={100}
-              unoptimized
               height={32}
               width={32}
               src="/botx-logo.png"
@@ -87,7 +85,7 @@ const Message = ({ role, message, delay }: MessageProps) => {
             : "order-2 bg-muted-foreground/5"
         )}
       >
-        {role === "ai" && isTypingBot ? (
+        {role === "ai" && showTyping ? (
           <LoadingDots />
         ) : role === "user" ? (
           <p className="text-wrap max-w-sm">
@@ -107,15 +105,58 @@ const Message = ({ role, message, delay }: MessageProps) => {
             ))}
           </p>
         ) : (
-          <TypingAnimation
+          <OptimizedTypingAnimation
+            text={message}
+            isInView={isInView}
             className="text-sm text-wrap max-w-sm font-medium"
-            duration={10}
-          >
-            {message}
-          </TypingAnimation>
+          />
         )}
       </motion.div>
     </motion.div>
+  );
+};
+
+// Optimized typing animation component with smooth character-by-character typing
+interface TypingAnimationProps {
+  text: string;
+  isInView: boolean;
+  className?: string;
+}
+
+const OptimizedTypingAnimation = ({
+  text,
+  isInView,
+  className,
+}: TypingAnimationProps) => {
+  const [displayedText, setDisplayedText] = useState("");
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    if (!isInView) return;
+
+    if (currentIndex < text.length) {
+      // Fast typing speed: 15ms per character for smooth, quick typing
+      const timeout = setTimeout(() => {
+        setDisplayedText(text.substring(0, currentIndex + 1));
+        setCurrentIndex(currentIndex + 1);
+      }, 15);
+
+      return () => clearTimeout(timeout);
+    }
+  }, [currentIndex, text, isInView]);
+
+  return (
+    <p className={cn("min-h-[20px]", className)}>
+      {displayedText}
+      {currentIndex < text.length && (
+        <motion.span
+          initial={{ opacity: 0 }}
+          animate={{ opacity: [0, 1, 0] }}
+          transition={{ duration: 0.8, repeat: Infinity }}
+          className="inline-block w-[2px] h-4 bg-current ml-0.5 align-middle"
+        />
+      )}
+    </p>
   );
 };
 
@@ -127,14 +168,13 @@ const LoadingDots = () => {
           key={dot}
           className="size-2 rounded-full bg-muted-foreground/60"
           initial={{ y: 0 }}
-          whileInView={{ y: [0, -5, 0] }}
+          animate={{ y: [0, -5, 0] }}
           transition={{
             duration: 0.6,
-            repeat: Number.POSITIVE_INFINITY,
+            repeat: Infinity,
             repeatType: "loop",
             delay: dot * 0.2,
           }}
-          viewport={{ once: true }}
         />
       ))}
     </div>
