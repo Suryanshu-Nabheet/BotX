@@ -53,6 +53,16 @@ export async function POST(request: Request) {
     if (json) {
       console.error("[CHAT_API_ERROR] Request body keys:", Object.keys(json));
       console.error("[CHAT_API_ERROR] Messages:", json.messages?.length || 0);
+      
+      // Log detailed Zod validation errors
+      if (error && typeof error === 'object' && 'issues' in error) {
+        console.error("[CHAT_API_ERROR] Validation issues:", JSON.stringify((error as any).issues, null, 2));
+      }
+      
+      // Log first message structure for debugging
+      if (json.messages && json.messages.length > 0) {
+        console.error("[CHAT_API_ERROR] First message structure:", JSON.stringify(json.messages[0], null, 2));
+      }
     }
     return new ChatSDKError("bad_request:api").toResponse();
   }
