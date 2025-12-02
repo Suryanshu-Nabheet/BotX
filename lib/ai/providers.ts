@@ -51,10 +51,7 @@ export const myProvider = customProvider({
       "nousresearch/hermes-3-llama-3.1-405b:free"
     ),
     "moonshotai/kimi-k2-0711:free": openrouter("moonshotai/kimi-k2-0711:free"),
-    "nvidia/llama-3.1-nemotron-70b-instruct:free": openrouter(
-      "nvidia/llama-3.1-nemotron-70b-instruct:free"
-    ),
-    "liquid/lfm-40b:free": openrouter("liquid/lfm-40b:free"),
+    "openai/gpt-oss-20b:free": openrouter("openai/gpt-oss-20b:free"),
 
     // Internal models for utilities
     "chat-model": openrouter("meta-llama/llama-3.2-3b-instruct:free"),

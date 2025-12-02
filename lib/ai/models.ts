@@ -109,19 +109,14 @@ export const chatModels: ChatModel[] = [
     description: "MoonshotAI (Free)",
   },
   {
-    id: "nvidia/llama-3.1-nemotron-70b-instruct:free",
-    name: "Nemotron 70B",
-    description: "NVIDIA (Free)",
-  },
-  {
-    id: "liquid/lfm-40b:free",
-    name: "Liquid LFM 40B",
-    description: "Liquid (Free)",
+    id: "openai/gpt-oss-20b:free",
+    name: "GPT OSS 20B",
+    description: "OpenAI (Free)",
   },
 ];
 
 export function getModelLogo(modelId: string): string {
-  if (modelId.includes("nvidia") || modelId.includes("liquid")) {
+  if (modelId.includes("openai") || modelId.includes("gpt-oss")) {
     return "/icons/chatgpt.svg";
   }
   if (modelId.includes("meta")) return "/icons/meta.svg";
