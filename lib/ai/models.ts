@@ -116,9 +116,6 @@ export const chatModels: ChatModel[] = [
 ];
 
 export function getModelLogo(modelId: string): string {
-  if (modelId.includes("openai") || modelId.includes("gpt-oss")) {
-    return "/icons/chatgpt.svg";
-  }
   if (modelId.includes("meta")) return "/icons/meta.svg";
   if (modelId.includes("google")) return "/icons/google.svg";
   if (modelId.includes("deepseek")) return "/icons/deepseek.svg";
@@ -128,6 +125,7 @@ export function getModelLogo(modelId: string): string {
   if (modelId.includes("openchat")) return "/icons/openchat.svg";
   if (modelId.includes("nous")) return "/icons/meta.svg";
   if (modelId.includes("moonshot")) return "/icons/moonshot.svg";
+  if (modelId.includes("openai")) return "/icons/chatgpt.svg";
 
   // Default fallback
   return "/icons/meta.svg";
