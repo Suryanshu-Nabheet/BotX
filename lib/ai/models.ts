@@ -108,9 +108,22 @@ export const chatModels: ChatModel[] = [
     name: "Kimi K2 0711",
     description: "MoonshotAI (Free)",
   },
+  {
+    id: "nvidia/llama-3.1-nemotron-70b-instruct:free",
+    name: "Nemotron 70B",
+    description: "NVIDIA (Free)",
+  },
+  {
+    id: "liquid/lfm-40b:free",
+    name: "Liquid LFM 40B",
+    description: "Liquid (Free)",
+  },
 ];
 
 export function getModelLogo(modelId: string): string {
+  if (modelId.includes("nvidia") || modelId.includes("liquid")) {
+    return "/icons/chatgpt.svg";
+  }
   if (modelId.includes("meta")) return "/icons/meta.svg";
   if (modelId.includes("google")) return "/icons/google.svg";
   if (modelId.includes("deepseek")) return "/icons/deepseek.svg";
@@ -120,7 +133,7 @@ export function getModelLogo(modelId: string): string {
   if (modelId.includes("openchat")) return "/icons/openchat.svg";
   if (modelId.includes("nous")) return "/icons/meta.svg";
   if (modelId.includes("moonshot")) return "/icons/moonshot.svg";
-  
+
   // Default fallback
   return "/icons/meta.svg";
 }
