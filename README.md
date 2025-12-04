@@ -1,3 +1,5 @@
+[![BotX: AI-Powered Development Platform](./public/hero-thumbnail.png)](https://github.com/Suryanshu-Nabheet/BotX)
+
 <h1 align="center">BotX</h1>
 
 <p align="center">
